@@ -1,0 +1,15 @@
+; $Id$
+; Auther Sanmugasundaram k
+; Email - k.sanmugam2@gmail.com
+
+
+name = "STUpload"
+description = "This is the module used to upload Spoken Tutorial videos"
+core = 6.x
+php = 5.1
+version = "6.x-1.0.1"
+package = Spoken-Tutorial
+
+scripts[] = stupload.js
+stylesheets[all][] = stupload.css
+stylesheets[print][] = stupload.css

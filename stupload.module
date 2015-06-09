@@ -1,0 +1,1589 @@
+<?php
+
+	function stupload_perm() {
+		return array(
+			'administer stupload',
+			'stupload english tutorial upload',
+			'stupload english tutorial update',
+			'stupload regional language tutorial upload',
+			'stupload regional language tutorial update',
+			'stupload upload english-timed script',
+			'stupload add foss and tutorial',
+			'resource not required',
+			'review tutorial',
+			'domain review tutorial',
+			'admin review tutorial',
+			'quality review tutorial',
+			'stupload ajax-fill methods',
+			'contributor access',
+			'reviewer role assign',
+			'view all tutorials list',
+			'request exception',
+			'exception tutorials',
+			'exception requested tutorials',
+			'list of keywords',
+			'duration videos',
+			'accepted outline updation',
+		);
+	}
+
+	function stupload_menu(){
+		$items = array();
+		$items['stupload/change-status'] = array(
+			'title' => 'Reset tutorial status',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('change_status_form'),
+			'access arguments' => array('administer stupload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'change_status.inc',
+		);
+		$items['stupload/change-userid'] = array(
+			'title' => 'Reset tutorial status',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('change_status_form'),
+			'access arguments' => array('administer stupload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'change_status.inc',
+		);
+		$items['stupload/tutchange_get_lang'] = array(
+			'page callback' => 'tutchange_get_lang',
+			'access callback' => TRUE,
+		);
+		$items['list_zip'] = array(
+        	        'title' => 'Files inside zip',
+	                'page callback' => 'list_zip_archive',
+	               	'access arguments' => array('stupload ajax-fill methods'),
+        	        'type' => MENU_NORMAL_ITEM,
+	        );
+		$items['resource_not_available'] = array(
+	                'title' => 'Resource Not Available',
+       		        'description' => 'Resource Not Available',
+                	'page callback' => 'get_resource_not_available',
+                	'access callback' => TRUE,
+                	'type' => MENU_NORMAL_ITEM,
+	        );
+	        $items['resource_not_required'] = array(
+	                'title' => 'Resource Not Required',
+	                'description' => 'Resource Not Required',
+	                'page callback' => 'get_resource_not_required',
+	                'access callback' => TRUE,
+	                'type' => MENU_NORMAL_ITEM,
+	        );
+
+	
+		// stupload admin settings form
+		$items['admin/settings/stupload'] = array(
+			'title' => 'spoken-tutorial upload settings',
+			'description' => 'spoken-tutorial upload interface settings',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('stupload_settings_form'),
+			'access arguments' => array('administer stupload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'settings.inc',
+		);
+		// public review tutorials
+		$items['stupload/public_review'] = array(
+			'title' => 'Public review',
+			'description' => 'spoken-tutorial public rating page',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('public_review_form'),
+			'access callback' => TRUE,
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'public_review.inc',
+		);
+		$items['stupload/public_review_list'] = array(
+			'title' => 'Public review List',
+			'page callback' => 'public_review_list',
+			'access arguments' => array('quality review tutorial'),
+			'file' => 'public_review.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/public_review_view'] = array(
+			'title' => 'View public tutorial review',
+			'page callback' => 'public_review_view',
+			'access arguments' => array('quality review tutorial'),
+			'file' => 'public_review.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		
+		$items['stupload/pr_get_user'] = array(
+			'title' => 'Get user details',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('pr_get_user_form'),
+			'access callback' => TRUE,
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'public_review.inc',
+		);
+		$items['stupload/pr_get_user_detail'] = array(
+			'title' => 'Get user details',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('pr_get_user_detail_form'),
+			'access callback' => TRUE,
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'public_review.inc',
+		);
+		
+		// add new foss, tutorials
+		$items['stupload/add_foss'] = array(
+			'title' => 'Add New FOSS Category',
+			'description' => 'Add New FOSS Category for ST Videos',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('add_foss_form'),
+			'access arguments' => array('stupload add foss and tutorial'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'add_foss.inc',
+		);
+		// add instruction sheet
+		$items['stupload/instruction_sheets'] = array(
+			'title' => 'Add instruction sheet',
+			'page callback' => 'instruction_sheets',
+			'access arguments' => array('contributor access'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'instruction_sheet.inc',
+		);
+		// upload existing prerequisit
+		$items['stupload/update_prerequisit'] = array(
+			'title' => 'Update Prerequisit',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('update_prerequisit_form'),
+			'access arguments' => array('contributor access'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'update_prerequisit.inc',
+		);
+		$items['stupload/update_keywords'] = array(
+                        'title' => 'Update Keywords',
+                        'page callback' => 'drupal_get_form',
+                        'page arguments' => array('update_keywords_form'),
+                        'access arguments' => array('contributor access'),
+                        'type' => MENU_NORMAL_ITEM,
+                        'file' => 'update_prerequisit.inc',
+                );
+		$items['stupload/load_tutorial_name'] = array(
+			'page callback' => 'load_tutorial_name',
+			'access callback' => TRUE,
+		);
+		$items['stupload/add_tutorial'] = array(
+			'title' => 'Add New Tutorial Name',
+			'description' => 'Add New Tutorial for FOSS Category',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('add_tutorial_name_form'),
+			'access arguments' => array('stupload add foss and tutorial'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'add_tutorial_name.inc',
+		);
+		// upload english tutorials
+		$items['stupload/upload_english_tutorial'] = array(
+			'title' => 'Upload English Tutorial',
+			'description' => 'Upload English',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('upload_english_prerequest_form'),
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_prerequest.inc',
+		);
+		$items['stupload/upload_english_tutorial_index'] = array(
+			'title' => 'English Tutorial Upload Page',
+			'page callback' => 'english_index',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'add_english_index.inc',
+		);
+		$items['stupload/update_english_tutorial/outline'] = array(
+			'description' => 'Upload English Outline',
+			'page callback' => 'upload_english_outline',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_outline.inc',
+		);
+		$items['stupload/update_english_tutorial/script'] = array(
+			'description' => 'Upload English Script',
+			'page callback' => 'upload_english_script',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_script.inc',
+		);
+		$items['stupload/update_english_tutorial/slide'] = array(
+			'description' => 'Upload English Slide',
+			'page callback' => 'upload_english_slide',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_slide.inc',
+		);
+		$items['stupload/update_english_tutorial/video'] = array(
+			'description' => 'Upload English Video',
+			'page callback' => 'upload_english_video',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_video.inc',
+		);
+		$items['stupload/update_english_tutorial/codefile'] = array(
+			'description' => 'Upload English Code ',
+			'page callback' => 'upload_english_codefile',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_codefile.inc',
+		);
+		$items['stupload/update_english_tutorial/assignment'] = array(
+			'description' => 'Upload English Assignment ',
+			'page callback' => 'upload_english_assignment',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_assignment.inc',
+		);
+		$items['stupload/update_english_tutorial/pre-requisit'] = array(
+			'description' => 'Upload English prerequisit',
+			'page callback' => 'upload_english_tutprerequisit',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_tutprerequisit.inc',
+		);
+		$items['stupload/prerequisit_tutorial_name'] = array(
+		    'page callback' => 'prerequisit_tutorial_name',
+		    'access callback' => TRUE,
+		    );
+
+		// update english tutorial
+		$items['stupload/update_english_tutorial'] = array(
+			'title' => 'Update English Tutorial',
+			'description' => 'Update English Tutorial',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('upload_english_prerequest_form'),
+			'access arguments' => array('stupload english tutorial update'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_prerequest.inc',
+		);
+		$items['stupload/update_english_tutorial_index'] = array(
+			'title' => 'English Tutorial Update Page',
+			'page callback' => 'english_update_index',
+			'access arguments' => array('stupload english tutorial update'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'add_english_index.inc',
+		);
+		// Add English Timed Script
+		$items['stupload/upload_english_timed_script'] = array(
+			'description' => 'Timed Script',
+			'page callback' => 'english_timed_script',
+			'access arguments' => array('stupload english tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'english_timed_script.inc',
+		);
+		
+		$items['stupload/upload_english_timed'] = array(
+			'title' => 'Upload English-timed Script',
+			'description' => 'Upload English',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('upload_english_timed_prerequest_form'),
+			'access arguments' => array('contributor access'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_english_timed_prerequest.inc',
+		);
+		// English timed 
+
+		$items['stupload/get_etimed_tnames'] = array(
+			'page callback' => 'get_etimed_tnames',
+			'access arguments' => array('stupload ajax-fill methods'),
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/etscript'] = array(
+			'description' => 'Upload English Script',
+			'page callback' => 'update_english_timed_script',
+			'access arguments' => array('contributor access'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'update_english_timed_script.inc',
+		);
+		// Upload native language tutorials
+		$items['stupload/upload_regional_language_tutorial'] = array(
+			'title' => 'Upload Regional Language Tutorial',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('upload_regional_language_prerequest_form'),
+			'access arguments' => array('stupload regional language tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_regional_language_prerequest.inc',
+		);
+		$items['stupload/upload_regional_language_tutorial_index'] = array(
+			'title' => 'Regional Language Tutorial Upload Page',
+			'page callback' => 'olang_index',
+			'access arguments' => array('stupload regional language tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'add_olang_index.inc',
+		);
+		$items['stupload/update_regional_language_tutorial/outline'] = array(
+			'description' => 'Upload Outline',
+			'page callback' => 'upload_olang_outline',
+			'access arguments' => array('stupload regional language tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_olang_outline.inc',
+		);
+		$items['stupload/update_regional_language_tutorial/script'] = array(
+			'description' => 'Upload Script',
+			'page callback' => 'upload_olang_script',
+			'access arguments' => array('stupload regional language tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_olang_script.inc',
+		);
+		$items['stupload/update_regional_language_tutorial/video'] = array(
+			'description' => 'Upload Video',
+			'page callback' => 'upload_olang_video',
+			'access arguments' => array('stupload regional language tutorial upload'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_olang_video.inc',
+		);
+		// update native language tutorials
+		$items['stupload/update_regional_language_tutorial'] = array(
+			'title' => 'Update Regional Language Tutorial',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('upload_regional_language_prerequest_form'),
+			'access arguments' => array('stupload regional language tutorial update'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'upload_regional_language_prerequest.inc',
+		);
+		$items['stupload/update_regional_language_tutorial_index'] = array(
+			'title' => 'Regional Language Tutorial Update Page',
+			'page callback' => 'olang_update_index',
+			'access arguments' => array('stupload regional language tutorial update'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'add_olang_index.inc',
+		);
+		
+		// ajax request urls
+		$items['stupload/get_category_levels'] = array(
+			'page callback' => 'get_category_levels',
+			'access arguments' => array('stupload ajax-fill methods'),
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/get_category_names'] = array(
+			'page callback' => 'get_category_names',
+			'access arguments' => array('stupload ajax-fill methods'),
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/get_tutorial_levels'] = array(
+			'page callback' => 'get_tutorial_levels',
+			'access arguments' => array('stupload ajax-fill methods'),
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/get_olang_tnames'] = array(
+			'page callback' => 'get_olang_tnames',
+			'access arguments' => array('stupload ajax-fill methods'),
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/get_english_ouline'] = array(
+			'page callback' => 'get_english_ouline',
+			'access arguments' => array('stupload ajax-fill methods'),
+			'type' => MENU_NORMAL_ITEM
+		);
+		// domain reviewer
+		$items['stupload/domain_review_tutorials'] = array(
+			'title' => 'Tutorial Review Page',
+			'page callback' => 'domain_review_tutorials',
+			'access arguments' => array('domain review tutorial'),
+			'file' => 'domain_review_tutorials.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/domain_review_tutorial_page'] = array(
+			'title' => 'Tutorial Review Page',
+			'page callback' => 'domain_review_tutorial_page',
+			'access arguments' => array('review tutorial'),
+			'file' => 'domain_review_tutorials.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		// admin reviewer
+		$items['stupload/admin_review_tutorials'] = array(
+			'title' => 'Tutorial Review Page',
+			'page callback' => 'admin_review_tutorials',
+			'access arguments' => array('admin review tutorial'),
+			'file' => 'admin_review_tutorials.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/admin_review_tutorial_page'] = array(
+			'title' => 'Tutorial Review Page',
+			'page callback' => 'admin_review_tutorial_page',
+			'access arguments' => array('review tutorial'),
+			'file' => 'admin_review_tutorials.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		
+		// quality reviewer
+		$items['stupload/quality_review_tutorials'] = array(
+			'title' => 'Tutorial Review Page',
+			'page callback' => 'quality_review_tutorials',
+			'access arguments' => array('quality review tutorial'),
+			'file' => 'quality_review_tutorials.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['stupload/quality_review_tutorial_page'] = array(
+			'title' => 'Tutorial Review Page',
+			'page callback' => 'quality_review_tutorial_page',
+			'access arguments' => array('quality review tutorial'),
+			'file' => 'quality_review_tutorials.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		
+		// need improvement
+		$items['stupload/need_improvement_list'] = array(
+			'title' => 'Need improvement list',
+			'description' => 'List of tutorials sent for improvement',
+			'page callback' => 'need_improvement_list',
+			'access arguments' => array('contributor access'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'need_improvement_list.inc',
+		);
+	
+		// Uploded list
+		$items['stupload/uploaded_tutorials_list'] = array(
+			'title' => 'List of tutorials uploaded',
+			'description' => 'List of tutorials uploaded',
+			'page callback' => 'uploaded_tutorials_list',
+			'access arguments' => array('contributor access'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'uploaded_tutorials_list.inc',
+		);
+		// reviewed tutorial list
+	    $items['stupload/reviewed_list'] = array(
+		    'title' => 'List of all reviewed tutorials',
+		    'description' => 'List Of All Reviewed Tutorials',
+		    'page callback' => 'reviewed_list',
+		    'access arguments' => array('review tutorial'),
+		    'type' => MENU_NORMAL_ITEM,
+		    'file' => 'reviewed_list.inc',
+	    );	
+		// contributor view tutorial page
+		$items['stupload/play_video'] = array(
+			'description' => 'Play selected video',
+			'page callback' => 'play_video',
+			'access arguments' => array('stupload ajax-fill methods'),
+			'file' => 'play_video.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		
+		//Delete tutorial
+		$items['stupload/delete'] = array(
+			'title' => 'Delete Tutorial',
+			'page callback' => 'delete_tutorial',
+			'access arguments' => array('contributor access'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'delete_tutorial.inc',
+		);
+		
+		// Assign Role
+		$items['stupload/domain_lang_role'] = array(
+			'title' => 'Domain user language assigning page',
+			'page callback' => 'domain_lang_role',
+			'access arguments' => array('reviewer role assign'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'reviewer_role_assign.inc',
+		);
+		$items['stupload/quality_lang_role'] = array(
+			'title' => 'Quality user language assigning page',
+			'page callback' => 'quality_lang_role',
+			'access arguments' => array('reviewer role assign'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'reviewer_role_assign.inc',
+		);
+		$items['stupload/need_improvement_list'] = array(
+			'title' => 'List of tutorials sent for improvement',
+			'description' => 'List of tutorials sent for improvement',
+			'page callback' => 'need_improvement_list',
+			'access arguments' => array('contributor access'),
+			'type' => MENU_NORMAL_ITEM,
+			'file' => 'need_improvement_list.inc',
+		);
+		// View all tutorials
+		$items['stupload/view_tutorials_list'] = array(
+		    'title' => 'Complete List Of Tutorials',
+		    'description' => 'List Of ST Videos',
+		    'page callback' => 'list_tutorials',
+		    'access arguments' => array('view all tutorials list'),
+		    'file' => 'list_tutorials.inc',
+		    'type' => MENU_NORMAL_ITEM,
+	    	);
+		//Request for exception
+		$items['stupload/request_exception'] = array(
+		    'title' => 'Request A Exception',
+			'description' => 'Video Exception',
+		    'page callback' => 'drupal_get_form',
+		    'page arguments' => array('request_exception_form'),
+		    'access arguments' => array('request exception'),
+		    'file' => 'request_exception.inc',
+//		    'type' => MENU_NORMAL_ITEM,
+	    	);
+	    $items['stupload/exception_tutorials'] = array(
+			'title' => 'Exception Tutorials',
+			'page callback' => 'exception_tutorials',
+			'access arguments' => array('exception tutorials'),
+			'file' => 'exception_review_tutorials.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+	    $items['stupload/exception_tutorial_page'] = array(
+			'title' => 'Exception Requested Tutorial Page',
+			'page callback' => 'exception_requested_tutorial_page',
+			'access arguments' => array('exception requested tutorials'),
+			'file' => 'exception_review_tutorials.inc',
+			'type' => MENU_NORMAL_ITEM,
+		);
+		$items['filter/get_lang'] = array(
+		'page callback' => 'filter_get_lang',
+		'access callback' => TRUE,
+		);
+		$items['filter/domain_lang'] = array(
+		'page callback' => 'filter_domain_lang',
+		'access callback' => TRUE,
+		);
+		$items['stupload/keyword'] = array(
+			'title' => 'List of FOSS and keywords',
+			'page callback' => 'list_of_keywords',
+			'access arguments' => array('list of keywords'),
+			'file' => 'keyword.inc',
+		);
+		$items['stupload/duration'] = array(
+			'title' => 'Duration Of Accepted Videos',
+			'page callback' => 'duration_videos',
+			'access arguments' => array('duration videos'),
+			'file' => 'duration.inc',
+		);
+		//for updating accepted outline
+		$items['stupload/update_outline'] = array(
+			'title' => 'Update Accepted Outline',
+			'description' => 'Update Accepted Outline',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('update_outline_form'),
+			'access arguments' => array('accepted outline updation'),
+			'file' => 'update_outline.inc',
+		);
+		$items['stupload/get_english_outline'] = array(
+			'page callback' => 'get_english_outline',
+			'access arguments' => array('stupload ajax-fill methods'),
+			'type' => MENU_NORMAL_ITEM
+		);
+		return $items;
+	}
+	
+	function get_english_outline(){
+		if(isset($_POST['tut_val']) && isset($_POST['tut_lang'])){
+			$query = "SELECT tutorial_outline FROM tutorial_resources WHERE tutorial_detail_id = ".$_POST['tut_val']." AND language = '".$_POST['tut_lang']."'";
+			$result = db_query($query);
+			$tr = db_fetch_object($result);
+			echo json_encode($tr);
+			exit;
+		}
+	}
+
+	function tutchange_get_lang() {
+
+	    if(isset($_POST['tutname'])){
+		
+		    $query = "select DISTINCT language from tutorial_resources where tutorial_detail_id =".$_POST['tutname']." order by language ASC";
+		    $result = db_query($query);
+		    $output = array();
+		    $count = 0;
+		    while($row = db_fetch_object($result)) {
+			    $output[$count] = $row->language;
+			    $count++;
+		    }
+		
+		    echo json_encode($output);
+	    }else {
+		    echo json_encode("Access Denied!");
+	    }
+	}
+
+	function filter_get_lang() {
+	if(isset($_POST['foss'])){
+		
+			$query = "select count(*) as nos,language from tutorial_resources as tr,tutorial_details as td where (tr.tutorial_detail_id = td.id) AND (td.foss_category = '".$_POST['foss']."') AND (tr.tutorial_video_status = 1) group by language ASC";
+		$result = db_query($query);
+		$output = array();
+		$count = 0;
+		while($row = db_fetch_object($result)) {
+			$output[$count][0] = $row->language;
+			$count++;
+		}
+		
+		echo json_encode($output);
+	}else {
+		echo json_encode("Access Denied!");
+	}
+	}
+	/*function filter_domain_lang() {
+	global $user;
+		if(isset($_POST['foss'])){
+			$query_domain ="select tl.name from tutorial_languages tl, tutorial_domain_reviewer_roles tdr where tdr.language_id=tl.id and tdr.uid=".$user->uid." order by tl.name ASC";
+	$result_domain = db_query($query_domain); 
+	$domain_lang = db_fetch_object($result_domain);
+			$query = "select count(*) as nos,tl.name from tutorial_languages tl,tutorial_domain_reviewer_roles tdr,tutorial_resources tr, tutorial_details td, tutorial_common_contents tcc where (tdr.language_id = tl.id) AND tr.tutorial_detail_id=td.id and tr.tutorial_content_id=tcc.id and tr.language='".$domain_lang->name."' and ((tr.tutorial_outline_status = 2 or tr.tutorial_outline_status = 1) or (tr.tutorial_script_status=2 or tr.tutorial_script_status=2) or tr.tutorial_video_status=2 or (tcc.tutorial_slide_status=2 or tcc.tutorial_slide_status=1) or (tcc.tutorial_code_status=2 or tcc.tutorial_code_status=1) or (tcc.tutorial_assignment_status=2 or tcc.tutorial_assignment_status=1))";
+			$result = db_query($query);
+			$output = array();
+			$count = 0;
+			while($row = db_fetch_object($result)) {
+				$output[$count][0] = $domain_lang->name;
+			}
+			echo json_encode($output);
+		}else {
+			echo json_encode("Access Denied!");
+		}
+	}*/
+	function filter_domain_lang() {
+	global $user;
+		if(isset($_POST['foss'])){
+		$query_domain ="select tdr.language_id, tl.name from tutorial_domain_reviewer_roles tdr, tutorial_languages tl where tdr.uid=".$user->uid." and tl.id=tdr.language_id order by tl.name ASC";
+	$result_domain = db_query($query_domain); 
+	$flag1 = 0;
+	while($domain_lang = db_fetch_object($result_domain)) {
+		if($flag1 > 0) {
+			$lang_query .= ' or ';
+		}
+		$lang_query .= "tr.language ='".$domain_lang->name."'";
+		$lang[$domain_lang->name] = $domain_lang->name;
+		$flag1++;
+	}
+			$query = "select DISTINCT tr.language from tutorial_resources tr,tutorial_details td,tutorial_common_contents tcc WHERE tr.tutorial_detail_id=td.id AND (".$lang_query.") AND td.foss_category = '".$_POST['foss']."' AND tr.tutorial_detail_id = td.id AND tr.tutorial_detail_id=td.id and tr.tutorial_content_id=tcc.id and ((tr.tutorial_outline_status = 2 or tr.tutorial_outline_status = 1) or (tr.tutorial_script_status=1 or tr.tutorial_script_status=2) or tr.tutorial_video_status=2 or (tcc.tutorial_slide_status=2 or tcc.tutorial_slide_status=1) or (tcc.tutorial_code_status=2 or tcc.tutorial_code_status=1) or (tcc.tutorial_assignment_status=2 or tcc.tutorial_assignment_status=1))";
+			$result = db_query($query);
+			$output = array();
+			$count = 0;
+			while($row = db_fetch_object($result)) {
+				$output[$count][0] = $row->language;
+			}
+			echo json_encode($output);
+		}else {
+			echo json_encode("Access Denied!");
+		}
+	}
+
+
+	function load_tutorial_name(){
+		if(isset($_POST['foss'])){
+			$query = "SELECT distinct td.tutorial_name, td.id FROM tutorial_details td, tutorial_resources tr where tr.tutorial_status='accepted' and tr.tutorial_detail_id=tr.id and foss_category='".$_POST['foss']."'and tr.tutorial_status='accepted' order by td.foss_category ASC";
+			$result = db_query($query);
+			$output = array();
+			while($row = db_fetch_object($result)){
+				$output[$row->id] = $row->tutorial_name;
+			}
+			echo json_encode($output);
+			exit;
+		}
+	}
+	function prerequisit_tutorial_name(){
+	    if(isset($_POST['foss'])){
+		    $query = "SELECT distinct td.id as tdid, td.tutorial_name FROM tutorial_details td, tutorial_resources tr where tr.tutorial_status='accepted' and tr.tutorial_detail_id=tr.id and foss_category='".$_POST['foss']."' order by td.order_code ASC";
+		    $result = db_query($query);
+		    $output = array();
+		    while($row = db_fetch_object($result)){
+			    $output[$row->tdid] = $row->tutorial_name;
+		    }
+		    echo json_encode($output);
+		    exit;
+	    }
+    }
+
+	function list_zip_archive(){
+	
+		// require_once('path.config.inc');
+	
+		if(isset($_REQUEST['file_path']) && isset($_REQUEST['title'])){
+			$output = '<h2>'.$_REQUEST['title'].'</h2>';
+			$output .= read_ziparchive(variable_get('file_upload_path', '').$_REQUEST['file_path']);
+			$output .= '<a href="'.variable_get('tutorial_path', '').$_REQUEST['file_path'].'">Click here to download '.$_REQUEST['title'].'</a>';
+		}else{
+			$output = 'Something went wrong';
+		}
+
+		return $output;
+	}
+
+	//get tutorials for language
+	function get_tutorials_language(){
+		if(isset($_POST['language']) && isset($_POST['foss'])){
+			$query = "SELECT  id, tutorial_name FROM tutorial_details WHERE foss_category='".$_POST['foss']."' and tutorial_details.id IN ( SELECT distinct tutorial_detail_id FROM tutorial_resources where language='".$_POST['language']."') order by foss_category, tutorial_name, tutorial_level, order_code ASC";
+			$result = db_query($query);
+			$output = array();
+			while($row = db_fetch_object($result)){
+				$output[] = $row;
+			}
+			echo json_encode($output);
+			exit;
+		}
+	}
+	//get tutorial outline for selected tutorial
+	function get_tutorials_outline(){
+		if(isset($_POST['language']) && isset($_POST['tdid'])){
+			$query = "SELECT  id, tutorial_outline FROM tutorial_resources WHERE tutorial_detail_id =".$_POST['tdid']." and language='".$_POST['language']."'";
+			$result = db_query($query);
+			$row = db_fetch_object($result);
+			echo json_encode($row);
+			exit;
+		}
+	}
+
+	// English timed getting tutorial names
+	function get_etimed_tnames(){
+		if(isset($_POST['level']) && isset($_POST['foss'])){
+			$query = "SELECT  tutorial_name FROM tutorial_details WHERE foss_category='".$_POST['foss']."' and tutorial_level =  '".$_POST['level']."' AND tutorial_details.id IN ( SELECT distinct tutorial_detail_id FROM tutorial_resources where language='English')";
+			$result = db_query($query);
+			$output = array();
+			while($row = db_fetch_object($result)){
+				$output[] = $row;
+			}
+			echo json_encode($output);
+			exit;
+		}
+	}
+
+	// get_english_ouline
+	function get_english_ouline(){
+		if(isset($_POST['trid'])){
+			$query = "SELECT  `tutorial_detail_id` FROM tutorial_resources WHERE id = '".$_POST['trid']."'";
+			$result = db_query($query);
+			$tr = db_fetch_object($result);
+
+			$query = "SELECT  `tutorial_outline` FROM tutorial_resources WHERE tutorial_detail_id = '".$tr->tutorial_detail_id."' and language='English'";
+			$result = db_query($query);
+			$troutline = db_fetch_object($result);
+			echo json_encode($troutline);
+			exit;
+		}
+	}
+	// index page
+
+	function index(){
+	
+		global $user;
+	
+		$content = "<div class='upload-index-page list-link'><ul>";
+		if(in_array('admin_review_user', $user->roles) || in_array('admin_user', $user->roles)){
+			$content .="<li><a href='".$GLOBALS['base_url']."/stupload/addfoss'> Add New FOSS</a></li>";
+			$content .="<li><a href='".$GLOBALS['base_url']."/stupload/tutorial'> Add New Tutorial</a></li>";
+		}
+		if(in_array('contributor', $user->roles) || in_array('admin_user', $user->roles)){
+			$content .="<li><a href='".$GLOBALS['base_url']."/stupload/upload_english'> Upload English Tutorial</a></li>";
+			$content .="<li><a href='".$GLOBALS['base_url']."/stupload/upload_other_lang'>Upload Other Language Tutorial</a></li>";
+			$content .="<li><a href='".$GLOBALS['base_url']."/stupload/update_tutorial_search'>Update Existing Tutorial</a></li>";
+		}
+		if(in_array('admin_review_user', $user->roles) || in_array('domain_user', $user->roles) || in_array('admin_user', $user->roles)){
+			$content .="<li><a href='".$GLOBALS['base_url']."/stupload/review_tutorial_lists'>Review Tutorials</a></li>";
+		}
+		$content .="<li><a href='".$GLOBALS['base_url']."/stupload/view_tutorials_list'>View All Tutorials</a></li>";
+		if(in_array('admin_user', $user->roles)){
+			$content .="<li><a href='".$GLOBALS['base_url']."/stupload/view_logs_list'>View Update Logs</a></li>";
+		}
+		return $content."</ul></div>";
+	}
+
+	// for "add available tutorial levels" and "add tutorial names"
+	function get_tutorial_levels(){
+		if(isset($_POST['foss']) && !empty($_POST['level'])){
+			$query = "select tutorial_name from tutorial_details where foss_category='".$_POST['foss']."' and tutorial_level = '".$_POST['level']."' order by order_code";
+			$result = db_query($query);		
+			$existing_tutorial_name = array();
+			while($row = db_fetch_object($result)){
+				$existing_tutorial_name[] = $row->tutorial_name;
+			}
+		
+			// get order code
+			$query = "select order_code from tutorial_details where foss_category='".$_POST['foss']."' order by order_code";
+			$result = db_query($query);
+			$exists_order = array();		
+			while($row = db_fetch_object($result)){
+				$exists_order[] = $row->order_code;
+			}
+		
+		}	
+		$send_data = array();
+		foreach($existing_tutorial_name as $names){
+			$send_data['tnames'][] = $names;
+		}
+		// find available order code
+		$i = 1;
+		$tutorial_order_no = array();
+		while($i < 100){
+			$tutorial_order_no[] = $i;
+			$i++;
+		}
+		$available = array_diff($tutorial_order_no, $exists_order);
+		foreach($available as $a){
+			$send_data['tlevels'][] = $a;
+		}
+
+		echo json_encode($send_data);
+		exit;
+	}
+
+	// getting tutorial level
+	function get_category_levels(){
+		if(isset($_POST['foss'])){
+			$query = "select distinct tutorial_level from tutorial_details where foss_category='".$_POST['foss']."' order by tutorial_level ASC";
+			$result = db_query($query);
+			$output = array();
+			while($row = db_fetch_object($result)){
+				$output[] = $row;
+				//$output[] = '2';
+			}
+			echo json_encode($output);
+			exit;
+		}
+	}
+
+	// getting tutorial names
+	function get_category_names(){
+		if(isset($_POST['level']) && isset($_POST['foss'])){
+			$query = "select td.tutorial_name from tutorial_resources tr, tutorial_details td where td.foss_category='".$_POST['foss']."' and td.tutorial_level='".$_POST['level']."' and tr.tutorial_detail_id=td.id and tr.language='English' and tr.tutorial_status !='accepted' order by td.order_code ASC";
+			if(isset($_POST['flag']) && $_POST['flag'] > 1)
+				$query = "select td.tutorial_name from tutorial_resources tr, tutorial_details td where td.foss_category='".$_POST['foss']."' and td.tutorial_level='".$_POST['level']."' and tr.tutorial_detail_id=td.id and tr.language='English' order by td.order_code ASC";
+			$result = db_query($query);
+			$output = array();
+			while($row = db_fetch_object($result)){
+				$output[] = $row;
+			}
+			echo json_encode($output);
+			exit;
+		}
+	}
+
+	function get_timed_category_names(){
+		if(isset($_POST['level']) && isset($_POST['foss'])){
+			$query = "SELECT  tutorial_name FROM tutorial_details WHERE foss_category='".$_POST['foss']."' and tutorial_level =  '".$_POST['level']."' AND tutorial_details.id NOT IN ( SELECT distinct tutorial_detail_id FROM tutorial_resources where language='English-timed')";
+			$result = db_query($query);
+			$output = array();
+			while($row = db_fetch_object($result)){
+				$output[] = $row;
+			}
+			echo json_encode($output);
+			exit;
+		}
+	}
+
+
+/******** for other languages ************/
+	
+
+	// getting tutorial names
+	function get_olang_tnames(){
+		if(isset($_POST['level']) && isset($_POST['foss']) && isset($_POST['lang']) && isset($_POST['flag'])){
+			if($_POST['flag'] == 0){
+				$query = "SELECT  tutorial_name FROM tutorial_details WHERE foss_category='".$_POST['foss']."' and tutorial_level =  '".$_POST['level']."' AND tutorial_details.id IN (SELECT tutorial_detail_id FROM tutorial_resources where language='English' AND tutorial_status='accepted') AND tutorial_details.id NOT IN (SELECT tutorial_detail_id FROM tutorial_resources where language='".$_POST['lang']."' and tutorial_status='accepted')";
+			}else{
+				$query = "SELECT  tutorial_name FROM tutorial_details WHERE foss_category='".$_POST['foss']."' and tutorial_level =  '".$_POST['level']."'";
+			}
+			$result = db_query($query);
+			$output = array();
+			while($row = db_fetch_object($result)){
+				$output[] = $row;
+			}
+			echo json_encode($output);
+			exit;
+		}
+	}
+
+
+	function read_ziparchive($file_path){
+
+		//Create object
+		$zip = new ZipArchive();
+		//Open the archive2.zip
+		if ($zip->open($file_path) !== TRUE) {
+			return '<span>Could not open archive</span>';
+		}else{
+			//Get the number of files in archive2.zip
+			$numFiles = $zip->numFiles;
+
+			//Iterate over the file list
+			$file_data = "<ul class='archive-files'>";
+			for ($i=0; $i<$numFiles; $i++) {
+				//Get the details of an entry defined by its index
+				$tmp = $zip->statIndex($i);
+				$file_data .= '<li>'.$tmp['name'].'</li>';
+			}
+			$file_data .= "</ul>";
+			// close archive
+			$zip->close();
+			return $file_data;
+		
+		}
+
+	}
+
+	function get_resource_not_required(){
+		echo '<html>
+				<head>
+					<meta name="author" content="Spoken Tutorials (www.spoken-tutorials.org)">
+					<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+					<link rel="stylesheet" href="drupst2nreq.php_files/style.css" type="text/css">
+					<title>Complete List of Spoken Tutorials</title>
+		
+					<style type="text/css">
+						td {font-family: tahoma, arial, verdana; font-size: 8pt }
+						th {font-family:tahoma, arial, verdana; font-size:9pt}
+					</style>
+				</head>
+				<body>
+					<form method="POST" action="drupst2.php" id="stform" name="stform">
+						<script type="text/javascript">
+							//Disable right click script
+							var message="Sorry, right-click has been disabled";
+		
+							function clickIE() {if (document.all) {(message);return false;}}
+							function clickNS(e) {
+							if(document.layers||(document.getElementById&&!document.all)){if (e.which==2||e.which==3) {(message);return false;}}}
+							if (document.layers){document.captureEvents(Event.MOUSEDOWN);document.onmousedown=clickNS;}
+							else{document.onmouseup=clickNS;document.oncontextmenu=clickIE;}
+							document.oncontextmenu=new Function("return false");
+		
+							function setOptions(chosen) {
+								var theContents = document.getElementById("foss1")[document.getElementById("foss1").selectedIndex].innerHTML;
+								document.getElementById("fossdata").value = theContents;
+								document.getElementById("fossid").value = theContents;
+								document.rbid.insht.value = theContents;
+							}
+		
+							function setOptions3(chosen) {
+								var theContenta = document.getElementById("lang")[document.getElementById("lang").selectedIndex].innerHTML;
+								document.getElementById("language").value = theContenta;
+								document.getElementById("fossid").value = theContenta;
+							}
+		
+							function GetSelectedItem() {
+								len = document.stform.radioid.length;
+								document.rbid.radiovalue.value=document.getElementById("fid").value;
+		
+								for (i = 0; i <len; i++) {
+									if (document.stform.radioid[i].checked) {
+										chosen = document.stform.radioid[i].value;
+									}
+								}
+		
+								if(chosen =="") {
+									alert("Please select a Tutorial to watch");
+								}
+								else
+								{
+									document.rbid.radiovalue.value=chosen;
+									document.rbid.insht.value=document.stform.fossdata.value;
+								}
+							}
+		
+							function showInstrsheet(){
+		
+								if(document.stform.fossdata.value =="")
+							  {
+									window.alert("Please select FOSS category to view instruction sheet");window.self;
+								}
+								else
+								{
+									inswindow=window.open(inks,"InstructionSheet","width=610 height=50 resizable=no scrollbars=no");
+									inswindow.moveTo(350,300);
+								}
+							}
+						</script>
+		
+						<center>
+							<br>
+							<p>
+								<table bgcolor="#D2691E" width="600">
+									<tbody>
+										<tr>
+											<td>
+												<b>
+													<font color="white" face="arial" size="2">
+														<center>
+															Resource Not Required<br><br>
+															This resource is not required to complete this tutorial.<br>
+															You can continue watching rest of the tutorials. 
+															Please use the search feature to watch several other interesting tutorials. 
+														</center>
+													</font>
+												</b>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</p>
+							<br>
+							<table height="5" bgcolor="lightgrey" width="600" border="0">
+								<tbody>
+									<tr>
+										<td>
+											<center>
+												© 2011 | <a href="http://www.spoken-tutorial.org/" target="_blank">Spoken Tutorial.org</a><br>
+												<b>IIT Bombay</b>
+											</center>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</center>
+					</form>
+				</body>
+			</html>';
+		exit;
+	}
+
+	function get_resource_not_available(){
+	
+		echo '<html>
+				<head>
+					<meta name="author" content="Spoken Tutorials (www.spoken-tutorials.org)">
+					<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+					<link rel="stylesheet" href="drupst2nreq.php_files/style.css" type="text/css">
+					<title>Complete List of Spoken Tutorials</title>
+		
+					<style type="text/css">
+						td {font-family: tahoma, arial, verdana; font-size: 8pt }
+						th {font-family:tahoma, arial, verdana; font-size:9pt}
+					</style>
+				</head>
+				<body>
+					<form method="POST" action="drupst2.php" id="stform" name="stform">
+						<script type="text/javascript">
+							//Disable right click script
+							var message="Sorry, right-click has been disabled";
+		
+							function clickIE() {if (document.all) {(message);return false;}}
+							function clickNS(e) {
+							if(document.layers||(document.getElementById&&!document.all)){if (e.which==2||e.which==3) {(message);return false;}}}
+							if (document.layers){document.captureEvents(Event.MOUSEDOWN);document.onmousedown=clickNS;}
+							else{document.onmouseup=clickNS;document.oncontextmenu=clickIE;}
+							document.oncontextmenu=new Function("return false");
+		
+							function setOptions(chosen) {
+								var theContents = document.getElementById("foss1")[document.getElementById("foss1").selectedIndex].innerHTML;
+								document.getElementById("fossdata").value = theContents;
+								document.getElementById("fossid").value = theContents;
+								document.rbid.insht.value = theContents;
+							}
+		
+							function setOptions3(chosen) {
+								var theContenta = document.getElementById("lang")[document.getElementById("lang").selectedIndex].innerHTML;
+								document.getElementById("language").value = theContenta;
+								document.getElementById("fossid").value = theContenta;
+							}
+		
+							function GetSelectedItem() {
+								len = document.stform.radioid.length;
+								document.rbid.radiovalue.value=document.getElementById("fid").value;
+		
+								for (i = 0; i <len; i++) {
+									if (document.stform.radioid[i].checked) {
+										chosen = document.stform.radioid[i].value;
+									}
+								}
+		
+								if(chosen =="") {
+									alert("Please select a Tutorial to watch");
+								}
+								else
+								{
+									document.rbid.radiovalue.value=chosen;
+									document.rbid.insht.value=document.stform.fossdata.value;
+								}
+							}
+		
+							function showInstrsheet(){
+		
+								if(document.stform.fossdata.value =="")
+							  {
+									window.alert("Please select FOSS category to view instruction sheet");window.self;
+								}
+								else
+								{
+									inswindow=window.open(inks,"InstructionSheet","width=610 height=50 resizable=no scrollbars=no");
+									inswindow.moveTo(350,300);
+								}
+							}
+						</script>
+		
+						<center>
+							<br>
+							<p>
+								<table bgcolor="#D2691E" width="600">
+									<tbody>
+										<tr>
+											<td>
+												<b>
+													<font color="white" face="arial" size="2">
+														<center>
+															Resource Not Available<br><br>
+															This resource is not available right now.<br>
+															You can continue watching rest of the tutorials.
+															Please use the search feature to watch several other interesting tutorials. 
+														</center>
+													</font>
+												</b>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</p>
+							<br>
+							<table height="5" bgcolor="lightgrey" width="600" border="0">
+								<tbody>
+									<tr>
+										<td>
+											<center>
+												© 2011 | <a href="http://www.spoken-tutorial.org/" target="_blank">Spoken Tutorial.org</a><br>
+												<b>IIT Bombay</b>
+											</center>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</center>
+					</form>
+				</body>
+			</html>';
+		exit;
+	}
+
+
+	// functions to send emails
+
+	// get message
+	function get_meassage($role, $message, $td, $user_name){
+		
+		$status_array = array(0 => 'Pending', 1 => 'Waiting for admin review', 2 => 'Waiting for Domain review', 3 => 'Waiting for quality check', 4 => 'Accepted', 5 => 'Need improvement', 6 => 'Not required', 7 => 'Public Review', 8 => 'Requested Exception');
+		$status = strtolower($td->tc);
+		$status1 = "tutorial_".$status."_status";
+		if($role == 'contributor'){
+			if($message != '') {
+				if($td->stage == "qreview") {
+					$body_msg = "<p> Thank you  ".$user_name." for your contribution.</p>
+								 <p> The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."<br>
+								      Comment: ".$message."</h3> 
+								 <p> has been reviewed by the Quality Reviewer.The ".$td->tc." needs improvement. 
+								 Kindly go through the comments posted by the reviewer, improve the ".$td->tc." and upload it once again for review.</p>";
+				}elseif($td->stage == "dreview") {
+					$body_msg = "<p> Thank you  ".$user_name." for your contribution.</p>
+								 <p> The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."<br>
+								      Comment: ".$message."</h3> 
+								 <p> has been reviewed by the Domain Reviewer.The ".$td->tc." needs improvement. 
+								     Kindly go through the comments posted by the reviewer, improve the ".$td->tc." and upload it once again for review.";
+					
+				}elseif($td->stage == "admin_review") {
+					$body_msg = "<p> Thank you  ".$user_name." for your contribution.</p>
+								 <p> The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."<br>
+								      Comment: ".$message."</h3> 
+								 <p> has been reviewed by the Admin Reviewer.The ".$td->tc." needs improvement. 
+								     Kindly go through the comments posted by the reviewer, improve the ".$td->tc." and upload it once again for review.</p>";
+					
+				}elseif($td->stage == "expreview") {
+								//Exception Review mail -> Contributor
+					$body_msg = "<p> Thank you ".$user_name." for your contribution</p>
+								 <p>The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."<br> 
+								      Exception: ".$message."</h3>
+								 <p> has successfully registered the exception.It will now be reveiwed by the Exception Reviewer.</p>
+								 <p>You will recieve a notification of acceptance or improvement in 2-3 working days.</p>";
+					
+				}elseif($td->stage == "expreviewrej") {
+								//Exception Review rejected -> Contributor
+					$body_msg = "<p> Thank you ".$user_name." for your contribution</p>
+								 <p>The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."<br> 
+								      Exception: ".$message."</h3>
+								 <p> Your exception has been rejected.The ".$td->tc." needs improvement.</p>
+								 <p>Kindly go through the comments posted by the reviewer, improve the ".$td->tc." and upload it once again for review.</p>";
+					
+				}elseif($td->stage == "expreviewacc") {
+								//Exception Review rejected -> Contributor
+					$body_msg = "<p> Thank you ".$user_name." for your contribution</p>
+								 <p>The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."<br> 
+								      Exception: ".$message."</h3>
+								 <p> Your exception has been accepted.The ".$td->tc." will now be reveiwed by the Admin Reviewer.</p>
+								 <p>You will recieve a notification of acceptance or improvement in 2-3 working days.</p>";
+					
+				}else {
+					$body_msg = "<p> Thank you ".$user_name.", for your contribution.</p>
+								 <p> We have recieved the ".$td->tc." for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."</h3> 
+								 <p>Our reviewers will now review the ".$td->tc.". You will recieve notification of acceptance or improvement in 2-3 working days</p>";
+				}
+			}else{
+				if($td->stage == "qreview") {
+								 //Qreview mail -> Contributor
+					$body_msg = "<p> Thank you ".$user_name." for your contribution</p>
+
+								 <p>The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."</h3> 
+								 <p>has been approved by Quality Reviewer.The ".$td->tc." is been published on the website.</p>";
+				}elseif($td->stage == "dreview") {
+								//Dreview mail -> Contributor
+					$body_msg = "<p> Thank you ".$user_name." for your contribution</p>
+								 <p>The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."</h3> 
+								 <p> has been approved by Domain Reviewer.It will now be reveiwed by the Quality Expert.</p>
+								 <p>You will recieve a notification of acceptance or improvement in 2-3 working days.</p>";
+				}elseif($td->stage == "admin_review") {
+								//Admin Review mail -> Contributor
+					$body_msg = "<p> Thank you ".$user_name." for your contribution</p>
+								 <p>The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."</h3> 
+								 <p> has been approved by Admin Reviewer.It will now be reveiwed by the Domain Expert.</p>
+								 <p>You will recieve a notification of acceptance or improvement in 2-3 working days.</p>";
+				}elseif($td->stage == "expreview") {
+							 //<p>Exception Review mail -> Contributor
+					$body_msg = "<p> Thank you ".$user_name." for your contribution</p>
+								 <p>The ".$td->tc." uploaded by you for </p>
+								 <h3> FOSS : ".$td->foss_category."<br> 
+								      Level : ".$td->tutorial_level."<br> 
+								      Tutorial Name : ".$td->tutorial_name."<br> 
+								      Language : ".$td->language."<br> 
+								      Content : ".$td->tc."<br> 
+								      Status: ".$status_array[$td->$status1]."</h3> 
+								 <p> has successfully registered the exception.It will now be reveiwed by the Exception Reviewer.</p>
+								 <p>You will recieve a notification of acceptance or improvement in 2-3 working days.</p>";
+				}else {
+					$body_msg = "<p> Thank you ".$user_name." for your contribution </p>
+								 <p>We have recieved the ".$td->tc." for </p>
+								 <h3> FOSS : ".$td->foss_category.'<br> 
+								      Level : '.$td->tutorial_level.'<br> 
+								      Tutorial Name : '.$td->tutorial_name.' in language '.$td->language.'<br> 
+								      Content : '.$td->tc."<br>
+								      Status: ".$status_array[$td->$status1]."</h3>
+								  <p>Our reviewers will now review the ".$td->tc.". You will recieve a notification of acceptance or improvement in 2-3 working days.</p>";
+				}
+					// send the email to quality checker after generating an exception
+			}
+		}else if($td->stage == "expreview" && $role == 'quality_checker'){
+			$body_msg = "<p> Dear Reviewer, </p>
+						 <p>The ".$td->tc." uploaded by ".$user_name." for </p>
+						 <h3> FOSS : ".$td->foss_category."<br> 
+						      Level : ".$td->tutorial_level."<br> 
+						      Tutorial Name : ".$td->tutorial_name."<br> 
+						      Language : ".$td->language."<br> 
+						      Content : ".$td->tc."<br> 
+						      Status: ".$status_array[$td->$status1]."<br>
+							 Justification: ".$message."</h3>  
+						 <p>has requested an exception for tutorial.Please review and give your feedback within 3 working days.</p>";
+		
+		// send the email to quality checker after aprovel of domain reviewer
+		}else if($td->stage == "dreview" && $role == 'quality_checker'){
+			$body_msg = "<p> Dear Reviewer, </p>
+						 <p>The ".$td->tc." uploaded by ".$user_name." for </p>
+						 <h3> FOSS : ".$td->foss_category."<br> 
+						      Level : ".$td->tutorial_level."<br> 
+						      Tutorial Name : ".$td->tutorial_name."<br> 
+						      Language : ".$td->language."<br> 
+						      Content : ".$td->tc."<br> 
+						      Status: ".$status_array[$td->$status1]."</h3> 
+						 <p>has been approved by the Domain Reviewer.Please review and give your feedback within 3 working days.</p>";
+		
+		// send the email to domain checker after aprovel of admin reviewer
+		}else if($td->stage == "admin_review" && $role == 'domain_user'){
+			$body_msg = "<p> Dear Reviewer, </p>
+						 <p>The ".$td->tc." uploaded by ".$user_name." for </p>
+						 <h3> FOSS : ".$td->foss_category."<br> 
+						      Level : ".$td->tutorial_level."<br> 
+						      Tutorial Name : ".$td->tutorial_name."<br> 
+						      Language : ".$td->language."<br> 
+						      Content : ".$td->tc."<br> 
+						      Status: ".$status_array[$td->$status1]."</h3> 
+						 <p>, has been approved by the Admin Reviewer.Please review and give your feedback within 3 working days.</p>";
+		}else if($role == 'domain_user' && $td->stage == 'expreviewacc'){
+			$body_msg = "<p>Dear Domain Reviewer, </p>
+							 <p>The ".$td->tc." is uploaded by ".$user_name." for </p>
+							 <h3> FOSS : ".$td->foss_category."<br> 
+							      Level : ".$td->tutorial_level."<br> 
+							      Tutorial Name : ".$td->tutorial_name."<br> 
+							      Language : ".$td->language."<br> 
+							      Content : ".$td->tc."<br> 
+							      Status: ".$status_array[$td->$status1]."<br>
+							      Remarks: ".$message."</h3> 
+							 <p>Exception Reviewer has accepted the exception</p>
+							 <p>Please review and give your feedback within 3 working days.</p>";
+		}
+		else if($role == 'admin_review_user'){
+			if($message != ''){
+				$body_msg = "<p>Dear Admin (User) Reviewer, </p>
+							 <p>The ".$td->tc." is uploaded by ".$user_name." for </p>
+							 <h3> FOSS : ".$td->foss_category."<br> 
+							      Level : ".$td->tutorial_level."<br> 
+							      Tutorial Name : ".$td->tutorial_name."<br> 
+							      Language : ".$td->language."<br> 
+							      Content : ".$td->tc."<br> 
+							      Status: ".$status_array[$td->$status1]."</h3> 
+							 <p>.Please review and give your feedback within 3 working days.</p>";
+			}else{
+				$body_msg = "<p>Dear Admin (User) Reviewer, </p>
+							 <p>The ".$td->tc." is uploaded by ".$user_name." for </p>
+							 <h3> FOSS : ".$td->foss_category."<br> 
+							      Level : ".$td->tutorial_level."<br> 
+							      Tutorial Name : ".$td->tutorial_name."<br> 
+							      Language : ".$td->language."<br> 
+							      Content : ".$td->tc."<br> 
+							      Status: ".$status_array[$td->$status1]."</h3> 
+							 <p>Please review and give your feedback within 3 working days.</p>";
+			}
+		}else if($role == 'domain_user'){
+			if($message != ''){
+				$body_msg = "<p> Dear Domain Reviewer, </p>
+							 <p>".$td->tc." uploaded by ".$user_name." for </p>
+							 <h3> FOSS : ".$td->foss_category."<br> 
+							      Level : ".$td->tutorial_level."<br> 
+							      Tutorial Name : ".$td->tutorial_name."<br> 
+							      Language : ".$td->language."<br> 
+							      Content : ".$td->tc."<br> 
+							      Status: ".$status_array[$td->$status1]."</h3> 
+							 <p>has been approved by the Admin Reviewer.Please review and give your feedback within 3 working days.</p>";
+			}else{
+				$body_msg = "<p> Dear Domain Reviewer, </p>
+							 <p>".$td->tc." uploaded by ".$user_name." for </p>
+							 <h3> FOSS : ".$td->foss_category."<br> 
+							      Level : ".$td->tutorial_level."<br> 
+							      Tutorial Name : ".$td->tutorial_name."<br> 
+							      Language : ".$td->language."<br> 
+							      Content : ".$td->tc."<br> 
+							      Status: ".$status_array[$td->$status1]."</h3> 
+							 <p>has been approved by the Admin Reviewer.Please review and give your feedback within 3 working days.</p>";
+			}
+		}else if($role == 'admin_user'){
+			if($message != ''){
+				$body_msg = "<p> Dear Admin User, </p>
+				 			 <p>The following content is uploaded in <a href='http://www.spoken-tutorial.org'> spoken-tutorial.org</a></p>
+				 			 <h3> FOSS : ".$td->foss_category."<br> 
+				 			      Level : ".$td->tutorial_level."<br> 
+				 			      Tutorial Name : ".$td->tutorial_name."<br> 
+				 			      Language : ".$td->language."<br> 
+				 			      Content : ".$td->tc."</h3>
+				 			 <p><h3>Remarks : </h3>".$message."</p>";
+			}else{
+				$body_msg = "<p> Dear Admin User, </p>
+							 <p>The following content is uploaded in <a href='http://www.spoken-tutorial.org'> spoken-tutorial.org</a></p>
+							 <h3> FOSS : ".$td->foss_category."<br> 
+							      Level : ".$td->tutorial_level."<br> 
+							      Tutorial Name : ".$td->tutorial_name."<br> 
+							      Language : ".$td->language."<br> 
+							      Content : ".$td->tc."</h3>
+							 <p><h3>Remarks : </h3>".$message."</p>";
+			}
+		}
+		return $body_msg;
+	}
+	function get_role_emails($role){
+		//var_dump($role);
+		$query = "SELECT users.name, users.mail FROM role LEFT JOIN users_roles ON users_roles.rid = role.rid LEFT JOIN users ON users_roles.uid = users.uid WHERE role.name = '".$role."'";
+		$result = db_query($query);
+		$email_ids = '';
+		while($row = db_fetch_object($result)){
+			$email_ids .= $row->mail.',';
+		}
+		return $email_ids;
+	}
+	
+	function get_language_role_emails($lang){
+		$email_ids ='';
+		if($lang){
+			$query = "select u.mail from users u, tutorial_languages tl, tutorial_quality_roles tqr where tqr.language_id=tl.id and u.uid=tqr.uid and tl.name='".$lang."'";
+			$result = db_query($query);
+			while($row = db_fetch_object($result)){
+				$email_ids .= $row->mail.',';
+			}
+		}
+		return $email_ids;
+	}
+	function get_contributor_email($uid){
+		$query = "SELECT mail FROM users WHERE uid ='".$uid."'";
+		$result = db_query($query);
+		$row = db_fetch_object($result);
+		return $row->mail;
+	}
+	 function get_contributor_name($uid){
+                $query = "SELECT name FROM users WHERE uid ='".$uid."'";
+                $result = db_query($query);
+                $row = db_fetch_object($result);
+                return $row->name;
+        }
+
+	function stupload_notify($mailto, $role, $message, $td, $user_name) {
+		// get subject
+		$subject_content = array('contributor' => 'Spoken Tutorial Upload Notification', 'admin_review_user' => 'Spoken Tutorial Upload Notification', 'admin_user' => 'Spoken Tutorial Upload Notification', 'domain_user' => 'Spoken Tutorial Upload Notification' , 'quality_checker' => 'Exception request for tutorial');
+		echo $mailto."---".$subject_content[$role]."---".get_meassage($role, $message, $td, $user_name)."<br>";
+		echo "</br> ===>";
+		global $custom_email;
+		$mailfrom = $custom_email;
+		if(isset($td->tc) && $td->tc != ''){
+			drupal_mail('stupload', 'reply', $mailto, language_default(), array('body' => get_meassage($role, $message, $td, $user_name), 'subject' => $subject_content[$role]), $mailfrom, TRUE);
+		}else{
+			return true;
+		}
+	}
+  
+	function stupload_mail($key, &$message, $params) {
+		$message['subject'] = $params['subject'];
+		$message['body'] = $params['body'];
+		$headers = array(
+		    'MIME-Version' => '1.0',
+		    'Content-Type' => 'text/html; charset=UTF-8; format=flowed',
+		    'Content-Transfer-Encoding' => '8Bit',
+		    'X-Mailer' => 'Drupal'
+		  );
+		//var_dump($message);
+		foreach ($headers as $key => $value) {
+		    $message['headers'][$key] = $value;
+		}
+	}
+	
+	// component status
+	function component_status($status, $uid, $path = NULL, $outline = 0 ){
+		$status_array = array(0 => 'Pending', 1 => 'Waiting for admin review', 2 => 'Waiting for Domain review', 3 => 'Waiting for quality check', 4 => 'Accepted', 5 => 'Need improvement', 6 => 'Not required', 7 => 'Public Review', 8 => 'Requested Exception');
+		$flag = 0;
+		$output = '';
+		if($outline == 1){
+			if($status == 0 && $uid == 0){
+				return "<span class='code_red'>".$status_array[$status]."</span>";
+			}elseif($status == 0){
+				return "<span class='code_orange'>".$status_array[$status]."</span>";
+			}else{
+				return "<p class='outline'>".stuolpad_outline_humen_view($path)."</p>";
+			}
+		}
+		// slide
+		if($outline == 2){
+			if($status == 0 && $uid == 0){
+				$output = "<span class='code_red'>";
+			}elseif($status == 0){
+				return "<span class='code_orange'>".$status_array[$status]."</span>";
+			}else{
+				return "<a target='_blank' class='code_green' href='".variable_get('wiki_path', '').$path."'>".$status_array[$status]."</a>";
+			}
+		}
+		
+		if($status == 0 && $uid == 0){
+			$output = "<span class='code_red'>";
+		}elseif($status == 0 && $uid > 0){
+			$output = "<span class='code_orange'>";
+		}else{
+			if($path && file_exists(variable_get('file_upload_path', '').$path)){
+				$flag = 1;
+				$output = "<a target='_blank' class='code_green' href='".variable_get('tutorial_path', '').$path."'>";
+			}elseif($path == NULL){
+				return $path;
+			}else{
+				$output = "<span class='code_orange'>";
+			}
+		}
+		$output .= $status_array[$status]."</span>";
+		if($flag){
+			$output .= "</a>";
+		}
+		return $output;
+	}
+	
+	function component_status_symbols($status, $flag=0){
+		$output = '';
+		$status_array = array(0 => 'Pending', 1 => 'Under admin review', 2 => 'Under Domain review', 3 => 'Under quality check', 4 => 'Accepted', 5 => 'Need improvement', 6 => 'Not required');
+		if($flag){
+			$output = $status_array[$status];
+		}else{		
+			if($status == 6)
+				$output = "<div class='code_green' title='".$status_array[$status]."'>--</div>";
+			elseif($status > 0)
+				$output = "<div class='code_green' title='".$status_array[$status]."'>&#10004;</div>";
+			else
+				$output = "<div class='code_red' title='".$status_array[$status]."'>&#8855;</div>";
+		}
+		return $output;
+	}
+	function stuolpad_outline_humen_view($outline){
+	       $temp = str_replace("\t", "  &nbsp; ", $outline);
+	       $temp = str_replace("\n\n\n", "\n", $temp);
+	       $outline_array = explode("\n", $temp);
+	       $temp = "";
+	       foreach($outline_array as $line) {
+		       $line = trim($line);
+		       if($line != ''){
+		               $temp .= "<li>".$line."</li>";
+		       }
+	       }
+	       return "<ul>".$temp."</ul>";
+	}
+	
+	function _format_bytes($a_bytes)
+	{
+	    if ($a_bytes < 1000) {
+	        return $a_bytes .' B';
+	    } elseif ($a_bytes < 1048576) {
+	        return round($a_bytes / 1000, 2) .' KB';
+	    } elseif ($a_bytes < 1073741824) {
+	        return round($a_bytes / 1000000, 2) . ' MB';
+	    }
+	}
+	
+	// reviews
+		function status_update_comp_query($c, $status){
+		if($c == 'Outline'){
+			$output= 'tr.tutorial_outline_status = '.$status;
+		}elseif($c == 'Script'){
+			$output= 'tr.tutorial_script_status = '.$status;
+		}elseif($c == 'Slide'){
+			$output= 'tcc.tutorial_slide_status = '.$status;
+		}elseif($c == 'Video'){
+			$output= 'tr.tutorial_video_status = '.$status;
+		}elseif($c == 'Codefile'){
+			$output= 'tcc.tutorial_code_status = '.$status;
+		}elseif($c == 'Assignment'){
+			$output= 'tcc.tutorial_assignment_status = '.$status;
+		}
+		
+		return $output;
+	}
+	
+	function user_email($uid){
+		$query = "SELECT mail, name FROM users WHERE uid ='".$uid."'";
+		$result = db_query($query);
+		$row = db_fetch_object($result);
+		return $row;
+	}
+
+
+?>
